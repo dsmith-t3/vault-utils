@@ -4,12 +4,13 @@
 Creates a child token for the given secret key
 
 Usage:
-    secret.py --key=KEY [--value=VALUE] [--delete]
+    secret.py --key=KEY [--value=VALUE] [--delete] [--token=VALUE]
 
 Options:
     --key=KEY      the secret key
     --value=VALUE  the secret value
     --delete       delete a secret
+    --token=VALUE  optional token to use instead of from the config file
 """
 
 import config
@@ -23,7 +24,12 @@ if __name__ == "__main__":
 
     config = config.load_config()
 
-    client = hvac.Client(url=config['vault_url'], token=config['token'])
+    if args['--token']:
+        token = args['--token']
+    else:
+        token = config['token']
+
+    client = hvac.Client(url=config['vault_url'], token=token)
 
     secret_key = "secret/" + args['--key']
 
