@@ -35,4 +35,4 @@ if __name__ == "__main__":
     else:
         child_token = client.create_token(lease=lease)
 
-    print child_token
+    print child_token['auth']['client_token']
