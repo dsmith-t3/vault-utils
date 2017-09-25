@@ -3,19 +3,9 @@ import yaml
 
 
 def load_config():
-    config_file = "config.yml"
-
-    if not os.path.isfile(config_file):
-        raise Exception(config_file + " does not exist")
-
-    file = open(config_file)
-    data = yaml.safe_load(file)
-    file.close()
-
-    options = ["vault_url", "token"]
-
-    for option in options:
-        if data[option] is None:
-            raise Exception(option + " is not set")
-
+    with open("config.yml") as f:
+        data = yaml.safe_load(f)
+    missing = [opt for opt in ("vault_url", "token") if data.get(opt, None) is None]
+    if missing:
+        raise Exception("%s not set" % ", ".join(missing))
     return data
