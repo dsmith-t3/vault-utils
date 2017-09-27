@@ -18,21 +18,8 @@ from docopt import docopt
 
 if __name__ == "__main__":
     args = docopt(__doc__)
-
+    lease = args['--lease'] or '30m'
+    policies = [args['--policy']] if args['--policy'] else None
     config = config.load_config()
-
     client = hvac.Client(url=config['vault_url'], token=config['token'])
-
-    if args['--lease']:
-        lease = args['--lease']
-    else:
-        lease = "30m"
-
-    if args['--policy']:
-        policies = []
-        policies.append(args['--policy'])
-        child_token = client.create_token(policies=policies, lease=lease)
-    else:
-        child_token = client.create_token(lease=lease)
-
-    print child_token['auth']['client_token']
+    print client.create_token(policies=policies, lease=lease)
