@@ -22,7 +22,7 @@ from docopt import docopt
 if __name__ == "__main__":
     args = docopt(__doc__)
     config = config.load_config()
-    token = args['--token'] or config['--token']
+    token = args['--token'] or config['token']
     client = hvac.Client(url=config['vault_url'], token=token)
     secret_key = "secret/" + args['--key']
     check = False
