@@ -45,7 +45,10 @@ if __name__ == "__main__":
 
     response = client.read(secret_key)
 
-    print response
+    if response:
+        print "value: %s" % response['data']['value']
+    else:
+        print "WARNING: value not found for secret %s" % secret_key
 
     if not args['--delete'] and args['--value'] and not os.path.isfile(args['--value']):
         value = response['data']['value']
